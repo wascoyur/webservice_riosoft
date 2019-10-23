@@ -4,7 +4,6 @@
     <data-source source="LOCAL" name="bank" uuid="2cb2085e-ee9b-43d9-80f0-2cf4fe2416a4">
       <driver-ref>hsqldb.local</driver-ref>
       <synchronize>true</synchronize>
-      <configured-by-url>true</configured-by-url>
       <remarks>testBD</remarks>
       <jdbc-driver>org.hsqldb.jdbc.JDBCDriver</jdbc-driver>
       <jdbc-url>jdbc:hsqldb:file:$PROJECT_DIR$/src/main/resources/db/Develop</jdbc-url>
