@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="bank">
+  <database-model serializer="dbm" dbms="HSQLDB" family-id="HSQLDB" format-version="4.16">
+    <root id="1">
+      <ServerVersion>2.4</ServerVersion>
+    </root>
+    <database id="2" parent="1" name="PUBLIC">
+      <Current>1</Current>
+    </database>
+  </database-model>
+</dataSource>
