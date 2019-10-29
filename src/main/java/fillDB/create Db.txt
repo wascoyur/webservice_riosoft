@@ -1,0 +1,32 @@
+create table "092018B1"
+(
+  ID                     INTEGER not null
+    primary key,
+  REG_NUM_A              INTEGER not null,
+  NUM_ACC_SEC_B          INTEGER,
+  INP_BAL_C              INTEGER,
+  INP_DRAG_MET_D         INTEGER,
+  INP_BAL_FINISH_E       INTEGER,
+  TURN_REP_DEBIT_F       INTEGER,
+  TURN_REP_DEB_DEPO_G    INTEGER,
+  TURN_REP_KREDIT_H      INTEGER,
+  TURN_REP_I             INTEGER,
+  TURN_REP_DRAG_MET_J    INTEGER,
+  TURN_REP_KRED_FINISH_K INTEGER,
+  OUT_BAL_L              INTEGER,
+  OUT_BAL_DRAG_MET_M     INTEGER,
+  OUT_BAL_FINISH_N       INTEGER
+);
+create table "092018N1"
+(
+  ID                     INTEGER not null
+    primary key,
+  ORG_REG_ACC INTEGER,
+  ORG_NAME    INTEGER
+);
+create table NAME
+(
+  ID            INTEGER not null
+    primary key,
+  NUM_ACC_PLAN  INTEGER,
+  NAME_ACC_PLAN INTEGER);
