@@ -1,11 +1,15 @@
 package readFiles;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class ReadData {
     private HashMap<Integer, Integer> wbToMass;
@@ -41,5 +45,23 @@ public class ReadData {
 
     public static String getPathToSource() {
         return pathToSource;
+    }
+
+    public Map parseWorkbook(XSSFWorkbook workbook) {
+        ArrayList<Double> dataOfColumn = new ArrayList<>();
+        HashMap<String, ArrayList<Double>> map = new HashMap<>();
+        for (Row row : this.getSheet()) {
+            int getRowNum = row.getRowNum();
+            for (Cell cell : row) {
+                if (getRowNum == 0) {
+                    map.put(cell.toString(), null);
+                } else {
+                    dataOfColumn.add(Double.parseDouble(cell.toString()));
+                }
+//                System.out.print(cell.toString());
+            }
+//            System.out.println();
+        }
+        return map;
     }
 }
