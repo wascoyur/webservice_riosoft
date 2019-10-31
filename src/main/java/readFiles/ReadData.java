@@ -56,7 +56,13 @@ public class ReadData {
                 if (getRowNum == 0) {
                     map.put(cell.toString(), null);
                 } else {
-                    dataOfColumn.add(Double.parseDouble(cell.toString()));
+                    try {
+                        double tmp = (Double.parseDouble(cell.toString()));
+                        dataOfColumn.add(tmp);
+                    } catch (NumberFormatException e) {
+
+                    }
+
                 }
 //                System.out.print(cell.toString());
             }

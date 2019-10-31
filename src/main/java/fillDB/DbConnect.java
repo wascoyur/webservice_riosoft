@@ -31,33 +31,33 @@ public class DbConnect {
     public void createTables() throws SQLException {
         String CREATE_TABLE_1 = "CREATE TABLE if not exists  B1"
                 +"(ID INT not null primary key,"
-               +"REG_NUM_A              INTEGER,"
-               +"NUM_ACC_SEC_B          INTEGER,"
-               +"INP_BAL_C              INTEGER,"
-               +"INP_DRAG_MET_D         INTEGER,"
-               +"INP_BAL_FINISH_E       INTEGER,"
-               +"TURN_REP_DEBIT_F       INTEGER,"
-               +"TURN_REP_DEB_DEPO_G    INTEGER,"
-               +"TURN_REP_KREDIT_H      INTEGER,"
-               +"TURN_REP_I             INTEGER,"
-               +"TURN_REP_DRAG_MET_J    INTEGER,"
-               +"TURN_REP_KRED_FINISH_K INTEGER,"
-               +"OUT_BAL_L              INTEGER,"
-               +"OUT_BAL_DRAG_MET_M     INTEGER,"
-               +"OUT_BAL_FINISH_N       INTEGER );";
+               +"REG_NUM_A              VARCHAR ,"
+               +"NUM_ACC_SEC_B          VARCHAR,"
+               +"INP_BAL_C              VARCHAR,"
+               +"INP_DRAG_MET_D         VARCHAR,"
+               +"INP_BAL_FINISH_E       VARCHAR,"
+               +"TURN_REP_DEBIT_F       VARCHAR,"
+               +"TURN_REP_DEB_DEPO_G    VARCHAR,"
+               +"TURN_REP_KREDIT_H      VARCHAR,"
+               +"TURN_REP_I             VARCHAR,"
+               +"TURN_REP_DRAG_MET_J    VARCHAR,"
+               +"TURN_REP_KRED_FINISH_K VARCHAR,"
+               +"OUT_BAL_L              VARCHAR,"
+               +"OUT_BAL_DRAG_MET_M     VARCHAR,"
+               +"OUT_BAL_FINISH_N       VARCHAR );";
         this.statement = this.connection.createStatement();
         statement.executeUpdate(CREATE_TABLE_1);
 
         statement.executeUpdate("create table if not exists  N1" +
                 "(ID    INT not null primary key," +
-                "ORG_REG_ACC INT," +
-                "ORG_NAME    INT);");
+                "ORG_REG_ACC VARCHAR," +
+                "ORG_NAME    VARCHAR);");
 
 
         statement.executeUpdate(        "create table  if  not exists  NAME(" +
                         "ID INT not null primary key," +
-                        "NUM_ACC_PLAN  INTEGER," +
-                        "NAME_ACC_PLAN INTEGER);");
+                        "NUM_ACC_PLAN  VARCHAR," +
+                        "NAME_ACC_PLAN VARCHAR);");
         statement.close();
     }
 

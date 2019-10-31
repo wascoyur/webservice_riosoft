@@ -12,7 +12,7 @@ public class Main {
 
         ReadData readData = new ReadData(ReadData.getPathToSource());
         XSSFWorkbook xssfWorkbook = readData.getWb();
-//        readData.parseWorkbook(xssfWorkbook);
+        readData.parseWorkbook(xssfWorkbook);
 
         DbConnect connect = new DbConnect();
         try {
