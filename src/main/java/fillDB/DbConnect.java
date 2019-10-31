@@ -14,10 +14,10 @@ public class DbConnect {
 
 
     public void setConnection() throws SQLException, ClassNotFoundException {
-//        server = Server.createTcpServer().start();
+        server = Server.createTcpServer("-tcpPort", "9123", "-tcpAllowOthers").start();
         Class.forName("org.h2.Driver");
         try {
-            this.connection = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/test","sa","");
+            this.connection = DriverManager.getConnection("jdbc:h2:tcp://localhost:9123/~/test","sa","");
         } catch (SQLException e) {
             e.printStackTrace();
         }
