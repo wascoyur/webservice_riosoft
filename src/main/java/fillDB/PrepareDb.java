@@ -2,6 +2,7 @@ package fillDB;
 
 import org.h2.tools.Server;
 
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -80,7 +81,7 @@ public class PrepareDb {
     }
 
     public String insertRow(String cellContent, String TableName) throws SQLException {
-        String query = "INSERT INTO " + TableName + " (" + cellContent;
+        String query = "INSERT INTO " + TableName + " (" + cellContent +")";
         statement = connection.createStatement();
         int i = statement.executeUpdate(query);
         return "updatet " + i + " elements";

@@ -11,13 +11,15 @@ public class Main {
     //    private String path = "./src/main/resources/task/092018B1.xlsx";
     private PrepareDb prepareDb;
     public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException {
-
+        PrepareDb connect = new PrepareDb();
         ReadData readData = new ReadData(ReadData.getPathToSource());
+
         XSSFWorkbook xssfWorkbook = readData.getWb();
+        readData.setPrepareDb(connect);
         readData.parseWorkbook(xssfWorkbook);
 
-        PrepareDb connect = new PrepareDb();
-        readData.setPrepareDb(connect);
+
+
         try {
             connect.getConnection();
             connect.createTables();

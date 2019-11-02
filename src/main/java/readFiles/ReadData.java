@@ -8,6 +8,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -22,6 +25,7 @@ public class ReadData {
     private int countSheets;
     private String nameSheet;
     PrepareDb prepareDb;
+    private Path fileName;
 
     public ReadData(String pathToSource) throws IOException {
         this.pathToSource = pathToSource;
@@ -41,6 +45,7 @@ public class ReadData {
 
     private XSSFWorkbook createWb() throws IOException {
         FileInputStream fis = new FileInputStream(pathToSource);
+        this.fileName = Paths.get(pathToSource);
         XSSFWorkbook wb = new XSSFWorkbook(fis);
         return wb;
     }
@@ -72,9 +77,18 @@ public class ReadData {
                 } else {
                         sb.append(cell.toString()).append(",");  //todo: реализовать парсинг файла с данными на выходе: строка данных с разделителями ","
                 }
-//                prepareDb.insertRow(sb.toString(), )
             }
-            System.out.print(sb.toString());
+            if (row.getRowNum() != 0) {
+                sb.deleteCharAt(sb.lastIndexOf(","));
+                try {
+                    prepareDb.insertRow(sb.toString(), fileName.getFileName().toString().replaceAll(("\\.\\w+"), ""));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(sb.toString());
+                sb.delete(0, sb.length());
+            }
+
         }
         System.out.println(sb.toString());
     }
