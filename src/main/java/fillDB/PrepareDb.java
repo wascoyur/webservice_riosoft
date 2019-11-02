@@ -16,7 +16,6 @@ public class PrepareDb {
         createServerAndDb = new CreateServerAndDb("9123");
         this.server = this.createServerAndDb.getServer();
         this.connection = this.createServerAndDb.getConnection();
-
     }
 
     public Connection getConnection() {
@@ -37,12 +36,11 @@ public class PrepareDb {
 
     public void closeConnection() throws SQLException {
         connection.close();
-
     }
 
     public void createTables() throws SQLException {
         String CREATE_TABLE_1 = "CREATE TABLE if not exists  B1"
-                +"(ID INT not null primary key,"
+                +"(ID INT not null AUTO_INCREMENT primary key,"
                +"REG_NUM_A              VARCHAR ,"
                +"NUM_ACC_SEC_B          VARCHAR,"
                +"INP_BAL_C              VARCHAR,"
@@ -79,6 +77,13 @@ public class PrepareDb {
         System.out.println("сервер останавливается");
         server.stop();
 //        System.out.println(server.getStatus() + "\\n" + createServerAndDb.getServer().getStatus());;
+    }
+
+    public String insertRow(String cellContent, String TableName) throws SQLException {
+        String query = "INSERT INTO " + TableName + " (" + cellContent;
+        statement = connection.createStatement();
+        int i = statement.executeUpdate(query);
+        return "updatet " + i + " elements";
     }
 
 }

@@ -1,5 +1,6 @@
 package readFiles;
 
+import fillDB.PrepareDb;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -10,7 +11,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 
 public class ReadData {
@@ -21,6 +21,7 @@ public class ReadData {
     private int countRow;
     private int countSheets;
     private String nameSheet;
+    PrepareDb prepareDb;
 
     public ReadData(String pathToSource) throws IOException {
         this.pathToSource = pathToSource;
@@ -28,6 +29,14 @@ public class ReadData {
         this.countSheets = wb.getNumberOfSheets();
         this.countRow = wb.getSheetIndex("");
         this.nameSheet = wb.getSheetName(0);
+    }
+
+    public PrepareDb getPrepareDb() {
+        return prepareDb;
+    }
+
+    public void setPrepareDb(PrepareDb prepareDb) {
+        this.prepareDb = prepareDb;
     }
 
     private XSSFWorkbook createWb() throws IOException {
@@ -53,25 +62,20 @@ public class ReadData {
     public void  parseWorkbook(XSSFWorkbook workbook) {
         ArrayList<Double> dataOfColumn = new ArrayList<>();
         HashMap<String, ArrayList<Double>> map = new LinkedHashMap<>();
+        StringBuilder sb = new StringBuilder();
         for (Row row : this.getSheet()) {
             int getRowNum = row.getRowNum();
             for (Cell cell : row) {
                 if (getRowNum == 0) {
-//                    map.put(cell.toString(), null);
-                    System.out.println(map.keySet());
+                    map.put(cell.toString(), null);
+//                    System.out.println(map.keySet());
                 } else {
-                    try {
-                        System.out.println(row.toString());
-                        double tmp = (Double.parseDouble(cell.toString()));
-                        dataOfColumn.add(tmp);
-                    } catch (NumberFormatException e) {
-                        System.out.println("Попало не числовое значение: " + "строка: " +getRowNum + "столбец: " + cell.getColumnIndex() + " Тип данных: " + cell.getCellType().toString() + "Значение: " + cell.toString());
-                    }
+                        sb.append(cell.toString()).append(",");  //todo: реализовать парсинг файла с данными на выходе: строка данных с разделителями ","
                 }
-//                System.out.print(cell.toString());
+//                prepareDb.insertRow(sb.toString(), )
             }
-
+            System.out.print(sb.toString());
         }
-        System.out.println();
+        System.out.println(sb.toString());
     }
 }

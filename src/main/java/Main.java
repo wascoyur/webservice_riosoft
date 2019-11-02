@@ -8,14 +8,16 @@ import java.io.InputStreamReader;
 import java.sql.SQLException;
 
 public class Main {
-//    private String path = "./src/main/resources/task/092018B1.xlsx";
+    //    private String path = "./src/main/resources/task/092018B1.xlsx";
+    private PrepareDb prepareDb;
     public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException {
 
         ReadData readData = new ReadData(ReadData.getPathToSource());
         XSSFWorkbook xssfWorkbook = readData.getWb();
-//        readData.parseWorkbook(xssfWorkbook);
+        readData.parseWorkbook(xssfWorkbook);
 
         PrepareDb connect = new PrepareDb();
+        readData.setPrepareDb(connect);
         try {
             connect.getConnection();
             connect.createTables();
