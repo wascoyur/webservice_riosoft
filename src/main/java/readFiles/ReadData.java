@@ -9,9 +9,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
+
 public class ReadData {
+
     private HashMap<Integer, Integer> wbToMass;
     private static String pathToSource = "./src/main/resources/task/092018B1.xlsx";
     private XSSFWorkbook wb;
@@ -47,27 +50,28 @@ public class ReadData {
         return pathToSource;
     }
 
-    public Map parseWorkbook(XSSFWorkbook workbook) {
+    public void  parseWorkbook(XSSFWorkbook workbook) {
         ArrayList<Double> dataOfColumn = new ArrayList<>();
-        HashMap<String, ArrayList<Double>> map = new HashMap<>();
+        HashMap<String, ArrayList<Double>> map = new LinkedHashMap<>();
         for (Row row : this.getSheet()) {
             int getRowNum = row.getRowNum();
             for (Cell cell : row) {
                 if (getRowNum == 0) {
-                    map.put(cell.toString(), null);
+//                    map.put(cell.toString(), null);
+                    System.out.println(map.keySet());
                 } else {
                     try {
+                        System.out.println(row.toString());
                         double tmp = (Double.parseDouble(cell.toString()));
                         dataOfColumn.add(tmp);
                     } catch (NumberFormatException e) {
-
+                        System.out.println("Попало не числовое значение: " + "строка: " +getRowNum + "столбец: " + cell.getColumnIndex() + " Тип данных: " + cell.getCellType().toString() + "Значение: " + cell.toString());
                     }
-
                 }
 //                System.out.print(cell.toString());
             }
-//            System.out.println();
+
         }
-        return map;
+        System.out.println();
     }
 }

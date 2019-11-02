@@ -15,12 +15,14 @@ public class DbConnect {
 
     public void setConnection() throws SQLException, ClassNotFoundException {
         server = Server.createTcpServer("-tcpPort", "9123", "-tcpAllowOthers").start();
+        System.out.println(server.getStatus());
         Class.forName("org.h2.Driver");
         try {
             this.connection = DriverManager.getConnection("jdbc:h2:tcp://localhost:9123/~/test","sa","");
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        System.out.println(connection.getClientInfo());
     }
 
     public void closeConnection() throws SQLException {
@@ -46,19 +48,26 @@ public class DbConnect {
                +"OUT_BAL_DRAG_MET_M     VARCHAR,"
                +"OUT_BAL_FINISH_N       VARCHAR );";
         this.statement = this.connection.createStatement();
-        statement.executeUpdate(CREATE_TABLE_1);
+        int w = statement.executeUpdate(CREATE_TABLE_1);
+        System.out.println( "В первой таблице создано " + w +" заголовков");
 
-        statement.executeUpdate("create table if not exists  N1" +
+        w = statement.executeUpdate("create table if not exists  N1" +
                 "(ID    INT not null primary key," +
                 "ORG_REG_ACC VARCHAR," +
                 "ORG_NAME    VARCHAR);");
+        System.out.println( "Вo 2 таблице создано " + w +" заголовков");
 
-
-        statement.executeUpdate(        "create table  if  not exists  NAME(" +
+        w = statement.executeUpdate(        "create table  if  not exists  NAME(" +
                         "ID INT not null primary key," +
                         "NUM_ACC_PLAN  VARCHAR," +
                         "NAME_ACC_PLAN VARCHAR);");
+        System.out.println( "В 3 таблице создано " + w +" заголовков");
         statement.close();
+    }
+
+    public void serverStop() {
+        System.out.println("сервер останавливается");
+        server.stop();
     }
 
 }
