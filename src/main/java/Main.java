@@ -1,6 +1,4 @@
-import fillDB.DbConnect;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
+import fillDB.PrepareDb;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import readFiles.ReadData;
 
@@ -15,11 +13,11 @@ public class Main {
 
         ReadData readData = new ReadData(ReadData.getPathToSource());
         XSSFWorkbook xssfWorkbook = readData.getWb();
-        readData.parseWorkbook(xssfWorkbook);
+//        readData.parseWorkbook(xssfWorkbook);
 
-        DbConnect connect = new DbConnect();
+        PrepareDb connect = new PrepareDb();
         try {
-            connect.setConnection();
+            connect.getConnection();
             connect.createTables();
         } catch (SQLException e) {
             e.printStackTrace();

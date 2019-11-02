@@ -3,26 +3,36 @@ package fillDB;
 import org.h2.tools.Server;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class DbConnect {
+public class PrepareDb {
+    private CreateServerAndDb createServerAndDb;
     private Connection connection;
     private Statement statement;
     private Server server;
 
+    public PrepareDb() throws SQLException, ClassNotFoundException {
+        createServerAndDb = new CreateServerAndDb("9123");
+        this.server = this.createServerAndDb.getServer();
+        this.connection = this.createServerAndDb.getConnection();
 
-    public void setConnection() throws SQLException, ClassNotFoundException {
-        server = Server.createTcpServer("-tcpPort", "9123", "-tcpAllowOthers").start();
-        System.out.println(server.getStatus());
-        Class.forName("org.h2.Driver");
-        try {
-            this.connection = DriverManager.getConnection("jdbc:h2:tcp://localhost:9123/~/test","sa","");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        System.out.println(connection.getClientInfo());
+    }
+
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public void getConnection(Connection connection) {
+        this.connection = connection;
+    }
+
+    public Server getServer() {
+        return server;
+    }
+
+    public void setServer(Server server) {
+        this.server = server;
     }
 
     public void closeConnection() throws SQLException {
@@ -68,6 +78,7 @@ public class DbConnect {
     public void serverStop() {
         System.out.println("сервер останавливается");
         server.stop();
+//        System.out.println(server.getStatus() + "\\n" + createServerAndDb.getServer().getStatus());;
     }
 
 }
