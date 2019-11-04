@@ -17,6 +17,7 @@ public class PrepareDb {
         createServerAndDb = new CreateServerAndDb("9123");
         this.server = this.createServerAndDb.getServer();
         this.connection = this.createServerAndDb.getConnection();
+        createTables();
     }
 
     public Connection getConnection() {
@@ -40,38 +41,41 @@ public class PrepareDb {
     }
 
     public void createTables() throws SQLException {
-        String CREATE_TABLE_1 = "CREATE TABLE if not exists  B1"
+        String CREATE_TABLE_1 = "CREATE TABLE if not exists  \"092018B1\""
                 +"(ID INT not null AUTO_INCREMENT primary key,"
-               +"REG_NUM_A              VARCHAR ,"
-               +"NUM_ACC_SEC_B          VARCHAR,"
-               +"INP_BAL_C              VARCHAR,"
-               +"INP_DRAG_MET_D         VARCHAR,"
-               +"INP_BAL_FINISH_E       VARCHAR,"
-               +"TURN_REP_DEBIT_F       VARCHAR,"
-               +"TURN_REP_DEB_DEPO_G    VARCHAR,"
-               +"TURN_REP_KREDIT_H      VARCHAR,"
-               +"TURN_REP_I             VARCHAR,"
-               +"TURN_REP_DRAG_MET_J    VARCHAR,"
-               +"TURN_REP_KRED_FINISH_K VARCHAR,"
-               +"OUT_BAL_L              VARCHAR,"
-               +"OUT_BAL_DRAG_MET_M     VARCHAR,"
-               +"OUT_BAL_FINISH_N       VARCHAR );";
+               +"REG_NUM_A              VARCHAR default '0',"
+               +"NUM_ACC_SEC_B          VARCHAR default '0',"
+               +"INP_BAL_C              VARCHAR default '0',"
+               +"INP_DRAG_MET_D         VARCHAR default '0',"
+               +"INP_BAL_FINISH_E       VARCHAR default '0',"
+               +"TURN_REP_DEBIT_F       VARCHAR default '0',"
+               +"TURN_REP_DEB_DEPO_G    VARCHAR default '0',"
+               +"TURN_REP_KREDIT_H      VARCHAR default '0',"
+               +"TURN_REP_I             VARCHAR default '0',"
+               +"TURN_REP_DRAG_MET_J    VARCHAR default '0',"
+               +"TURN_REP_KRED_FINISH_K VARCHAR default '0',"
+               +"OUT_BAL_L              VARCHAR default '0',"
+               +"OUT_BAL_DRAG_MET_M     VARCHAR default '0',"
+               +"OUT_BAL_FINISH_N       VARCHAR default '0' );";
         this.statement = this.connection.createStatement();
-        int w = statement.executeUpdate(CREATE_TABLE_1);
-        System.out.println( "В первой таблице создано " + w +" заголовков");
+        statement.executeUpdate("DROP ALL OBJECTS") ;
+        statement.executeUpdate(CREATE_TABLE_1);
+        System.out.println( "b1 таблица подготовлена");
 
-        w = statement.executeUpdate("create table if not exists  N1" +
+//        statement.executeUpdate("DROP \"N1\"")  ;
+
+        statement.executeUpdate("create table if not exists  \"N1\"" +
                 "(ID    INT not null primary key," +
                 "ORG_REG_ACC VARCHAR," +
                 "ORG_NAME    VARCHAR);");
-        System.out.println( "Вo 2 таблице создано " + w +" заголовков");
+        System.out.println( "N1 таблица подготовлена");
 
-        w = statement.executeUpdate(        "create table  if  not exists  NAME(" +
+//        statement.executeUpdate("DROP \"NAME\"")  ;
+        statement.executeUpdate(        "create table  if  not exists  \"NAME\" (" +
                         "ID INT not null primary key," +
                         "NUM_ACC_PLAN  VARCHAR," +
                         "NAME_ACC_PLAN VARCHAR);");
-        System.out.println( "В 3 таблице создано " + w +" заголовков");
-        statement.close();
+        System.out.println( "NAME таблица подготовлена");
     }
 
     public void serverStop() {
@@ -81,9 +85,13 @@ public class PrepareDb {
     }
 
     public String insertRow(String cellContent, String TableName) throws SQLException {
-        String query = "INSERT INTO " + TableName + " (" + cellContent +")";
-        statement = connection.createStatement();
+        String query = "INSERT INTO \"" + TableName + "\" VALUES (null," + cellContent +")";
+        if (statement.isClosed()) {
+            this.statement = connection.createStatement();
+        }
+
         int i = statement.executeUpdate(query);
+//        connection.close();
         return "updatet " + i + " elements";
     }
 

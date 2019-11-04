@@ -10,7 +10,7 @@ public class CreateServerAndDb implements Runnable{
     private PrepareDb prepareDb;
     private Server server;
     private Connection connection;
-    private String dbCreateData = "jdbc:h2:tcp://localhost:9123/~/test";
+    private String dbCreateData = "jdbc:h2:tcp://localhost:9123/~/test;DB_CLOSE_DELAY=-1";
 
     public CreateServerAndDb(String port) throws SQLException, ClassNotFoundException {
         this.server = (Server.createTcpServer("-tcpPort", port/*"9123"*/, "-tcpAllowOthers"));

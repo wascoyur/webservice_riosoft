@@ -18,8 +18,6 @@ public class Main {
         readData.setPrepareDb(connect);
         readData.parseWorkbook(xssfWorkbook);
 
-
-
         try {
             connect.getConnection();
             connect.createTables();

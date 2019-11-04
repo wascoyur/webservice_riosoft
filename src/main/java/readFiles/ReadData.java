@@ -64,32 +64,39 @@ public class ReadData {
         return pathToSource;
     }
 
-    public void  parseWorkbook(XSSFWorkbook workbook) {
+    public void  parseWorkbook(XSSFWorkbook workbook) throws SQLException {
         ArrayList<Double> dataOfColumn = new ArrayList<>();
         HashMap<String, ArrayList<Double>> map = new LinkedHashMap<>();
         StringBuilder sb = new StringBuilder();
         for (Row row : this.getSheet()) {
-            int getRowNum = row.getRowNum();
             for (Cell cell : row) {
-                if (getRowNum == 0) {
+                if (row.getRowNum() == 0) {
                     map.put(cell.toString(), null);
 //                    System.out.println(map.keySet());
                 } else {
-                        sb.append(cell.toString()).append(",");  //todo: реализовать парсинг файла с данными на выходе: строка данных с разделителями ","
-                }
+                    String cellVal = cell.toString();
+                    if (cell.toString().isEmpty()) {
+                        cellVal = "0";
+                    }
+                        sb.append("\'").append(cellVal).append("\'").append(",");  //todo: реализовать парсинг файла с данными на выходе: строка данных с разделителями ","}
+                    }
             }
             if (row.getRowNum() != 0) {
                 sb.deleteCharAt(sb.lastIndexOf(","));
                 try {
                     prepareDb.insertRow(sb.toString(), fileName.getFileName().toString().replaceAll(("\\.\\w+"), ""));
+//                    System.out.println("строка: "+row.getRowNum());
+                    if (row.getRowNum() == 6817) {
+                        System.out.println();
+                    }
                 } catch (SQLException e) {
                     e.printStackTrace();
+                    System.out.println("строка ошибки: "+row.getRowNum());
                 }
-                System.out.println(sb.toString());
                 sb.delete(0, sb.length());
             }
 
         }
-        System.out.println(sb.toString());
+        prepareDb.getConnection().close();
     }
 }
