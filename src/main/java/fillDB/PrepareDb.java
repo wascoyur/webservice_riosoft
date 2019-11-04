@@ -84,15 +84,20 @@ public class PrepareDb {
 //        System.out.println(server.getStatus() + "\\n" + createServerAndDb.getServer().getStatus());;
     }
 
-    public String insertRow(String cellContent, String TableName) throws SQLException {
-        String query = "INSERT INTO \"" + TableName + "\" VALUES (null," + cellContent +")";
-        if (statement.isClosed()) {
+    public void insertRow(String cellContent, String TableName) {
+        try {
+            String query = "INSERT INTO \"" + TableName + "\" VALUES (null," + cellContent +")";
+            if (statement.isClosed()) {
             this.statement = connection.createStatement();
         }
 
-        int i = statement.executeUpdate(query);
+        int i = 0;
+
+            i = statement.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 //        connection.close();
-        return "updatet " + i + " elements";
     }
 
 }

@@ -68,51 +68,41 @@ public class ReadData {
         return pathToSource;
     }
 
-                public static void main(String[] args) {
-                    try {
-
-                        ReadData r = new ReadData("./src/main/resources/task/tmp.xlsx");
-                         r.newParseWorkbook(r.getWb());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-    public void newParseWorkbook(XSSFWorkbook workbook)throws SQLException {
-        Iterator<Row> rowIterator = workbook.getSheet(this.nameSheet).iterator();
+    public void newParseWorkbook()throws SQLException {
+        int rowStart = this.getSheet().getFirstRowNum() +1;
+        int rowEnd   = this.getSheet().getLastRowNum ();
         StringBuilder sb = new StringBuilder();
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            //For each row, iterate through all the columns
-            Iterator<Cell> cellIterator = row.cellIterator();
-            if (row.getRowNum() != 0) {
-                while (cellIterator.hasNext()) {
-                    Cell cell = cellIterator.next();
-                    //Check the cell type and format accordingly
-                    CellType ct = cell.getCellType();
-                    sb.append("\'");
-                    switch (ct) {
-                        case STRING:
-                            sb.append(cell.getStringCellValue());
-                            break;
+        for (int rw = rowStart; rw < rowEnd; rw++) {
+            Row row = this.getSheet().getRow(rw);
+            int minCellNum = row.getFirstCellNum();
+            int maxCellNum = row.getLastCellNum();
+            for (int cellNum = 0; cellNum < maxCellNum; cellNum++) {
+                Cell cell = row.getCell(cellNum);
+                sb.append("\'");
+                try {
+                    switch (cell.getCellType()) {
                         case NUMERIC:
                             sb.append(cell.getNumericCellValue());
                             break;
+                        case STRING:
+                            sb.append(cell.toString());
+                            break;
                         case BLANK:
-                            sb.append('0');
+                            sb.append(0);
                             break;
                     }
-                    sb.append("\'").append(",");
+                } catch (NullPointerException e) {
+                    System.out.println("Нераспознанные значения: Строка: "+(rw+1)+ " поле: "+(cellNum+1));
+                    sb.append("null");
                 }
-                System.out.println("String is: " + sb.toString());
+                sb.append("\'").append(",");
+
             }
+            sb.deleteCharAt(sb.lastIndexOf(","));
+            prepareDb.insertRow(sb.toString(), fileName.getFileName().toString().replaceAll(("\\.\\w+"), ""));
+            System.out.print(row.getRowNum() + ",");
             sb.delete(0, sb.length());
         }
-        
-
-
     }
 
     public void  parseWorkbook(XSSFWorkbook workbook) throws SQLException {
@@ -134,16 +124,13 @@ public class ReadData {
             }
             if (row.getRowNum() != 0) {
                 sb.deleteCharAt(sb.lastIndexOf(","));
-                try {
+
                     prepareDb.insertRow(sb.toString(), fileName.getFileName().toString().replaceAll(("\\.\\w+"), ""));
 //                    System.out.println("строка: "+row.getRowNum());
                     if (row.getRowNum() == 6817) {
                         System.out.println();
                     }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    System.out.println("строка ошибки: "+row.getRowNum());
-                }
+
                 sb.delete(0, sb.length());
             }
 

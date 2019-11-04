@@ -16,14 +16,9 @@ public class Main {
 
         XSSFWorkbook xssfWorkbook = readData.getWb();
         readData.setPrepareDb(connect);
-        readData.parseWorkbook(xssfWorkbook);
+        readData.newParseWorkbook();
 
-        try {
-            connect.getConnection();
-            connect.createTables();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        
         System.out.println("Остановить сервер?(1/0)");
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         if (Integer.parseInt(br.readLine()) == 1) {
