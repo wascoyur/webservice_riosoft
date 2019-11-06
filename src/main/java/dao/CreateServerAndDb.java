@@ -1,4 +1,4 @@
-package fillDB;
+package dao;
 
 import org.h2.tools.Server;
 

@@ -1,8 +1,7 @@
-package fillDB;
+package dao;
 
 import org.h2.tools.Server;
 
-import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -42,7 +41,7 @@ public class PrepareDb {
 
     public void createTables() throws SQLException {
         String CREATE_TABLE_1 = "CREATE TABLE if not exists  \"092018B1\""
-                +"(ID INT not null AUTO_INCREMENT primary key,"
+                +"(ID INT AUTO_INCREMENT primary key,"
                +"REG_NUM_A              VARCHAR default '0',"
                +"NUM_ACC_SEC_B          VARCHAR default '0',"
                +"INP_BAL_C              VARCHAR default '0',"
@@ -64,15 +63,15 @@ public class PrepareDb {
 
 //        statement.executeUpdate("DROP \"N1\"")  ;
 
-        statement.executeUpdate("create table if not exists  \"N1\"" +
-                "(ID    INT not null primary key," +
+        statement.executeUpdate("create table if not exists  \"092018N1\"" +
+                "(ID INT AUTO_INCREMENT primary key," +
                 "ORG_REG_ACC VARCHAR," +
                 "ORG_NAME    VARCHAR);");
         System.out.println( "N1 таблица подготовлена");
 
 //        statement.executeUpdate("DROP \"NAME\"")  ;
-        statement.executeUpdate(        "create table  if  not exists  \"NAME\" (" +
-                        "ID INT not null primary key," +
+        statement.executeUpdate(        "create table  if  not exists  \"NAMES\" (" +
+                        "ID INT AUTO_INCREMENT primary key," +
                         "NUM_ACC_PLAN  VARCHAR," +
                         "NAME_ACC_PLAN VARCHAR);");
         System.out.println( "NAME таблица подготовлена");

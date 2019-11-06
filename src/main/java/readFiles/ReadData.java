@@ -1,10 +1,7 @@
 package readFiles;
 
-import fillDB.PrepareDb;
-import org.apache.commons.math3.util.OpenIntToFieldHashMap;
-import org.apache.poi.hssf.usermodel.HSSFRow;
+import dao.PrepareDb;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -14,19 +11,14 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 
 
 public class ReadData {
 
     private HashMap<Integer, Integer> wbToMass;
-    private static String pathToSource = "./src/main/resources/task/092018B1.xlsx";
+    private static String pathToSource/* = "./src/main/resources/task/092018B1.xlsx"*/;
     private XSSFWorkbook wb;
-    private int countRow;
-    private int countSheets;
     private String nameSheet;
     PrepareDb prepareDb;
     private Path fileName;
@@ -34,8 +26,6 @@ public class ReadData {
     public ReadData(String pathToSource) throws IOException {
         this.pathToSource = pathToSource;
         this.wb  = createWb();
-        this.countSheets = wb.getNumberOfSheets();
-        this.countRow = wb.getSheetIndex("");
         this.nameSheet = wb.getSheetName(0);
     }
 
@@ -47,10 +37,16 @@ public class ReadData {
         this.prepareDb = prepareDb;
     }
 
-    private XSSFWorkbook createWb() throws IOException {
-        FileInputStream fis = new FileInputStream(pathToSource);
-        this.fileName = Paths.get(pathToSource);
-        XSSFWorkbook wb = new XSSFWorkbook(fis);
+    private XSSFWorkbook createWb() {
+        FileInputStream fis;
+        XSSFWorkbook wb = null;
+        try {
+            fis = new FileInputStream(pathToSource);
+            this.fileName = Paths.get(pathToSource);
+            wb = new XSSFWorkbook(fis);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return wb;
     }
 
@@ -68,7 +64,7 @@ public class ReadData {
         return pathToSource;
     }
 
-    public void newParseWorkbook()throws SQLException {
+    public void newParserWorkbook()throws SQLException {
         int rowStart = this.getSheet().getFirstRowNum() +1;
         int rowEnd   = this.getSheet().getLastRowNum ();
         StringBuilder sb = new StringBuilder();
@@ -99,42 +95,15 @@ public class ReadData {
 
             }
             sb.deleteCharAt(sb.lastIndexOf(","));
-            prepareDb.insertRow(sb.toString(), fileName.getFileName().toString().replaceAll(("\\.\\w+"), ""));
-            System.out.print(row.getRowNum() + ",");
+            insertRowToBd(sb);
+//            System.out.print(row.getRowNum() + ",");
             sb.delete(0, sb.length());
         }
     }
 
-    public void  parseWorkbook(XSSFWorkbook workbook) throws SQLException {
-        ArrayList<Double> dataOfColumn = new ArrayList<>();
-        HashMap<String, ArrayList<Double>> map = new LinkedHashMap<>();
-        StringBuilder sb = new StringBuilder();
-        for (Row row : this.getSheet()) {
-            for (Cell cell : row) {
-                if (row.getRowNum() == 0) {
-                    map.put(cell.toString(), null);
-//                    System.out.println(map.keySet());
-                } else {
-                    String cellVal = cell.toString();
-                    if (cell.toString().isEmpty()) {
-                        cellVal = "0";
-                    }
-                        sb.append("\'").append(cellVal).append("\'").append(",");  //todo: реализовать парсинг файла с данными на выходе: строка данных с разделителями ","}
-                    }
-            }
-            if (row.getRowNum() != 0) {
-                sb.deleteCharAt(sb.lastIndexOf(","));
-
-                    prepareDb.insertRow(sb.toString(), fileName.getFileName().toString().replaceAll(("\\.\\w+"), ""));
-//                    System.out.println("строка: "+row.getRowNum());
-                    if (row.getRowNum() == 6817) {
-                        System.out.println();
-                    }
-
-                sb.delete(0, sb.length());
-            }
-
-        }
-        prepareDb.getConnection().close();
+    private void insertRowToBd(StringBuilder sb) {
+        prepareDb.insertRow(sb.toString(), fileName.getFileName().toString().replaceAll(("\\.\\w+"), ""));
     }
+
+
 }
