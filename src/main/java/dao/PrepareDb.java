@@ -1,20 +1,20 @@
 package dao;
 
-import org.h2.tools.Server;
+//import org.h2.tools.Server;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class PrepareDb {
-    private CreateServerAndDb createServerAndDb;
+    private ConnectToBdServer createServerAndDb;
     private Connection connection;
     private Statement statement;
-    private Server server;
+//    private Server server;
 
     public PrepareDb() throws SQLException, ClassNotFoundException {
-        createServerAndDb = new CreateServerAndDb("9123");
-        this.server = this.createServerAndDb.getServer();
+        createServerAndDb = new ConnectToBdServer(/*"9123"*/);
+//        this.server = this.createServerAndDb.getServer();
         this.connection = this.createServerAndDb.getConnection();
         createTables();
     }
@@ -27,13 +27,13 @@ public class PrepareDb {
         this.connection = connection;
     }
 
-    public Server getServer() {
-        return server;
-    }
-
-    public void setServer(Server server) {
-        this.server = server;
-    }
+//    public Server getServer() {
+//        return server;
+//    }
+//
+//    public void setServer(Server server) {
+//        this.server = server;
+//    }
 
     public void closeConnection() throws SQLException {
         connection.close();
@@ -79,7 +79,7 @@ public class PrepareDb {
 
     public void serverStop() {
         System.out.println("сервер останавливается");
-        server.stop();
+//        server.stop();
 //        System.out.println(server.getStatus() + "\\n" + createServerAndDb.getServer().getStatus());;
     }
 
