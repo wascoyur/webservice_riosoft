@@ -10,11 +10,11 @@ public class ConnectToBdServer {
     private PrepareDb prepareDb;
 //    private Server server;
     private Connection connection;
-    private String dbBeginPath = "jdbc:postgresql://localhost:5432/";
+    private String dbBeginPath = "jdbc:postgresql://localhost:5433/";
 
     public ConnectToBdServer(String nameDb) throws SQLException, ClassNotFoundException {
         Class.forName("org.postgresql.Driver");
-        connection = DriverManager.getConnection(dbBeginPath + "postgres","user","1");
+        connection = DriverManager.getConnection(dbBeginPath + "postgres","postgres","postgres");
         createDb(nameDb);
     }
 
