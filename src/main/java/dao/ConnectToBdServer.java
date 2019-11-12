@@ -10,11 +10,11 @@ public class ConnectToBdServer {
     private PrepareDb prepareDb;
 //    private Server server;
     private Connection connection;
-    private String dbBeginPath = "jdbc:postgresql://localhost:5433/";
+    private String dbBeginPath = "jdbc:postgresql://localhost:5432/";
 
     public ConnectToBdServer(String nameDb) throws SQLException, ClassNotFoundException {
         Class.forName("org.postgresql.Driver");
-        connection = DriverManager.getConnection(dbBeginPath + "postgres","postgres","postgres");
+        connection = DriverManager.getConnection(dbBeginPath + "postgres","user","user");
         createDb(nameDb);
     }
 
@@ -33,10 +33,9 @@ public class ConnectToBdServer {
             dbName = "parser";
         }
         Statement statement = this.connection.createStatement();
-        statement.executeUpdate(" DROP DATABASE IF EXISTS " + dbName + ";" +
-                                    " create DATABASE " + dbName + ";");
+        statement.executeUpdate(" create DATABASE " + dbName + ";");
         this.connection.close();
-        this.connection = DriverManager.getConnection(dbBeginPath + dbName, "user", "1");
+        this.connection = DriverManager.getConnection(dbBeginPath + dbName, "user", "user");
     }
 
 }
