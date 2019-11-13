@@ -1,6 +1,5 @@
 package dao;
 
-//import org.h2.tools.Server;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -50,7 +49,7 @@ public class PrepareDb {
                +"OUT_BAL_FINISH_N       VARCHAR );";
         this.statement = this.connection.createStatement();
 //        statement.executeUpdate("DROP ALL OBJECTS") ;
-        statement.executeUpdate(CREATE_TABLE_1);
+        statement.executeUpdate();
         System.out.println( "b1 таблица подготовлена");
 
 //        statement.executeUpdate("DROP \"N1\"")  ;
@@ -77,7 +76,22 @@ public class PrepareDb {
 
     public void insertRow(String cellContent, String TableName) {
         try {
-            String query = "INSERT INTO \"" + TableName + "\" VALUES (" + cellContent +")";
+            String query = "INSERT INTO \"" + TableName + "\" " +
+                        (REG_NUM_A
+                        NUM_ACC_SEC_B
+                        INP_BAL_C
+                        INP_DRAG_MET_D
+                        INP_BAL_FINISH_E
+                        TURN_REP_DEBIT_F
+                        TURN_REP_DEB_DEPO_G
+                        TURN_REP_KREDIT_H
+                        TURN_REP_I
+                        TURN_REP_DRAG_MET_J
+                        TURN_REP_KRED_FINISH_K
+                        OUT_BAL_L
+                        OUT_BAL_DRAG_MET_M
+                        OUT_BAL_FINISH_N)
+            "+  VALUES (" + cellContent +")";
             if (statement.isClosed()) {
             this.statement = connection.createStatement();
         }
